@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+#define separador "***********************************************************************"
 int main () {
 	//MENÚ DE INICIO
 	
@@ -16,6 +16,8 @@ int main () {
 	int cuentaBancaria = 0;
 	int ingresoSatisfactorioAlSistema = 0;
 	
+	FILE *archivoUsuarios;
+	
 	//Elección de opciones (registro e ingreso)
 	printf("%c%c%c PUMACINE: Men%c de inicio %c%c%c", 176, 176, 176, 163, 176, 176, 176);
 	printf("\n\nBienvenido usuario.");
@@ -24,36 +26,68 @@ int main () {
 	printf("\n\n%CQu%c deseas hacer? ", 168, 130);
 	fflush(stdin);
 	gets(respuestaMenuDeInicio);
-	printf("- Opci%cn elegida: %s", 162, respuestaMenuDeInicio);
+	printf("- Opci%cn elegida: %s\n", 162, respuestaMenuDeInicio);
+	
+	printf("\n%s\n", separador); //Separador
 	
 	//Opción: Nuevo registro
 	if (strcmp(respuestaMenuDeInicio, "Nuevo registro") == 0) {
 		printf("\n%c%c%c PUMACINE: Nuevo registro %c%c%c", 176, 176, 176, 176, 176, 176);
 		printf("\n\nVamos a registrarlo en la base de datos.");
+		
+		//Apertura de archivo
+		archivoUsuarios = fopen ( "archivoUsuarios" , "w" );
+		
 		printf("\nIngrese nombre(s), apellido materno y paterno: ");
 		fflush(stdin);
 		gets(nombreYApellidosNuevoRegistro);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(archivoUsuarios, "%s:", nombreYApellidosNuevoRegistro);
+		}
 		printf("Ingrese edad: ");
 		fflush(stdin);
 		scanf("%i", &edad);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(&edad, "%i:", &edad); //Se usa &???
+		}
 		printf("Ingrese un nickname: ");
 		fflush(stdin);
 		scanf("%c", nickname);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(archivoUsuarios, "%s:", nickname);
+		}
 		printf("Ingrese una contrase%ca: ", 164);
 		fflush(stdin);
 		scanf("%c", contrasena);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(archivoUsuarios, "%s:", contrasena);
+		}
 		printf("Ingrese una descripci%cn corta de usted: ", 162);
 		fflush(stdin);
 		gets(descripcionUsuario);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(archivoUsuarios, "%s:", descripcionUsuario);
+		}
 		printf("Ingrese un correo electr%cnico: ", 162);
 		fflush(stdin);
 		scanf("%c", correoElectronico);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(archivoUsuarios, "%s:", correoElectronico);
+		}
 		printf("Ingrese un tel%cfono: ", 130);
 		fflush(stdin);
 		scanf("%i", &telefono);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(archivoUsuarios, "%i:", &telefono);
+		}
 		printf("Ingrese una cuenta bancaria: ");
 		fflush(stdin);
 		scanf("%i", &cuentaBancaria);
+		if (archivoUsuarios != NULL) { //Escritura en archivo
+			fprintf(archivoUsuarios, "%i:", &cuentaBancaria);
+		}
+		
+		fclose(archivoUsuarios); //Cierre de archivo
 		printf("\nREGISTRO SATISFACTORIO --- Regresando al men%c principal...", 163);	
 	}
 	
@@ -71,7 +105,7 @@ int main () {
 			gets(contrasena);
 			//Comparación de nickname y contraseña HACER CON MANEJO DE ARCHIVOS, CORREGIR STRCMP
 			if (strcmp(contrasena, "1234") == 0) {
-				printf("\nINGRESO SATISFACTORIO --- Pasando al men%c de usuarios...", 163);	
+				printf("\nINGRESO SATISFACTORIO --- Pasando al men%c de usuarios...\n", 163);	
 				ingresoSatisfactorioAlSistema = 1; //El ciclo no se repetirá de nuevo
 			}
 			else {
@@ -79,6 +113,6 @@ int main () {
 			}
 		} while (ingresoSatisfactorioAlSistema == 0);
 	}
-	
+		printf("\n%s\n", separador); //Separador
 	return 69;
 }
