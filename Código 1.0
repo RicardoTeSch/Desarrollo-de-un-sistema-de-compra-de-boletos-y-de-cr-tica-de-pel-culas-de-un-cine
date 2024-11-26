@@ -23,64 +23,62 @@ int main () {
 	printf("\n%c Ingreso al sistema", 175);
 	printf("\n\n%CQu%c deseas hacer? ", 168, 130);
 	fflush(stdin);
-	fgets(respuestaMenuDeInicio, 100, stdin);
+	gets(respuestaMenuDeInicio);
 	printf("- Opci%cn elegida: %s", 162, respuestaMenuDeInicio);
 	
 	//Opción: Nuevo registro
-	printf("\n%c%c%c PUMACINE: Nuevo registro %c%c%c", 176, 176, 176, 176, 176, 176);
-	printf("\n\nVamos a registrarlo en la base de datos.");
-	printf("\nIngrese nombre(s), apellido materno y paterno: ");
-	fflush(stdin);
-	fgets(nombreYApellidosNuevoRegistro, 100, stdin);
-	printf("Ingrese edad: ");
-	fflush(stdin);
-	scanf("%i", &edad);
-	printf("Ingrese un nickname: ");
-	fflush(stdin);
-	scanf("%c", nickname);
-	printf("Ingrese una contrase%ca: ", 164);
-	fflush(stdin);
-	scanf("%c", contrasena);
-	printf("Ingrese una descripci%cn corta de usted: ", 162);
-	fflush(stdin);
-	fgets(descripcionUsuario, 100, stdin);
-	printf("Ingrese un correo electr%cnico: ", 162);
-	fflush(stdin);
-	scanf("%c", correoElectronico);
-	printf("Ingrese un tel%cfono: ", 130);
-	fflush(stdin);
-	scanf("%i", &telefono);
-	printf("Ingrese una cuenta bancaria: ");
-	fflush(stdin);
-	scanf("%i", &cuentaBancaria);
-	printf("\nREGISTRO SATISFACTORIO --- Regresando al men%c principal...", 163);
-	
-	//Opción: Ingreso al sistema
-	do {
-		printf("\n%c%c%c PUMACINE: Ingreso al sistema %c%c%c", 176, 176, 176, 176, 176, 176);
-		printf("\n\nVamos a ingresar a su cuenta.");
-		printf("\nIngrese su nickname: ");
+	if (strcmp(respuestaMenuDeInicio, "Nuevo registro") == 0) {
+		printf("\n%c%c%c PUMACINE: Nuevo registro %c%c%c", 176, 176, 176, 176, 176, 176);
+		printf("\n\nVamos a registrarlo en la base de datos.");
+		printf("\nIngrese nombre(s), apellido materno y paterno: ");
+		fflush(stdin);
+		gets(nombreYApellidosNuevoRegistro);
+		printf("Ingrese edad: ");
+		fflush(stdin);
+		scanf("%i", &edad);
+		printf("Ingrese un nickname: ");
 		fflush(stdin);
 		scanf("%c", nickname);
-		printf("Ingrese su contrase%ca: ", 164);
+		printf("Ingrese una contrase%ca: ", 164);
 		fflush(stdin);
 		scanf("%c", contrasena);
-		//Comparación de nickname y contraseña HACER CON MANEJO DE ARCHIVOS, CORREGIR STRCMP
-//		if (strcmp(contrasena, "12345678") == 0) {
-			printf("\nINGRESO SATISFACTORIO --- Pasando al men%c de usuarios...", 163);	
-			ingresoSatisfactorioAlSistema = 1; //El ciclo no se repetirá de nuevo
-		}
-		else {
-			printf("\nLOS DATOS NO SON CORRECTOS --- Regresando al men%c de ingreso...", 163);		
-		}
-	} while (ingresoSatisfactorioAlSistema == 0);
-			
-	//Respuesta ante opciones SOLUCIONAR
-//	if (strcmp(respuestaMenuDeInicio, "Nuevo registro") == 0) {
-//		
-//	}
-//	if (strcmp(respuestaMenuDeInicio, "Ingreso al sistema") == 0) {
-//		
-//	}
+		printf("Ingrese una descripci%cn corta de usted: ", 162);
+		fflush(stdin);
+		gets(descripcionUsuario);
+		printf("Ingrese un correo electr%cnico: ", 162);
+		fflush(stdin);
+		scanf("%c", correoElectronico);
+		printf("Ingrese un tel%cfono: ", 130);
+		fflush(stdin);
+		scanf("%i", &telefono);
+		printf("Ingrese una cuenta bancaria: ");
+		fflush(stdin);
+		scanf("%i", &cuentaBancaria);
+		printf("\nREGISTRO SATISFACTORIO --- Regresando al men%c principal...", 163);	
+	}
+	
+	//Opción: Ingreso al sistema
+	if (strcmp(respuestaMenuDeInicio, "Ingreso al sistema") == 0) {
+		ingresoSatisfactorioAlSistema = 0;
+		do {
+			printf("\n%c%c%c PUMACINE: Ingreso al sistema %c%c%c", 176, 176, 176, 176, 176, 176);
+			printf("\n\nVamos a ingresar a su cuenta.");
+			printf("\nIngrese su nickname: ");
+			fflush(stdin);
+			gets(nickname);
+			printf("Ingrese su contrase%ca: ", 164);
+			fflush(stdin);
+			gets(contrasena);
+			//Comparación de nickname y contraseña HACER CON MANEJO DE ARCHIVOS, CORREGIR STRCMP
+			if (strcmp(contrasena, "1234") == 0) {
+				printf("\nINGRESO SATISFACTORIO --- Pasando al men%c de usuarios...", 163);	
+				ingresoSatisfactorioAlSistema = 1; //El ciclo no se repetirá de nuevo
+			}
+			else {
+				printf("\nLOS DATOS NO SON CORRECTOS --- Regresando al men%c de ingreso...", 163);		
+			}
+		} while (ingresoSatisfactorioAlSistema == 0);
+	}
+	
 	return 69;
 }
