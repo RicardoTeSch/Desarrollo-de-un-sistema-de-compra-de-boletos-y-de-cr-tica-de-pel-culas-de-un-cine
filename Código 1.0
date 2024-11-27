@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #define separador "***********************************************************************"
+
 int main () {
 	//MENÚ DE INICIO
 	
@@ -36,7 +37,7 @@ int main () {
 		printf("\n\nVamos a registrarlo en la base de datos.");
 		
 		//Apertura de archivo
-		archivoUsuarios = fopen ( "archivoUsuarios" , "w" );
+		archivoUsuarios = fopen ("archivoUsuarios.txt" , "r");
 		
 		printf("\nIngrese nombre(s), apellido materno y paterno: ");
 		fflush(stdin);
@@ -44,6 +45,9 @@ int main () {
 		if (archivoUsuarios != NULL) { //Escritura en archivo
 			fprintf(archivoUsuarios, "%s:", nombreYApellidosNuevoRegistro);
 		}
+		else {
+ 			printf("El archivo no existe.\n");
+ 		}
 		printf("Ingrese edad: ");
 		fflush(stdin);
 		scanf("%i", &edad);
