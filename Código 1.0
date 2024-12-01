@@ -1,122 +1,431 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #define separador "***********************************************************************"
 
+//declaracion de estructuras
+
+//declaracion de funciones
+
+
+void nuevoRegistro(FILE *registroUsuarios);
+int ingresoSistema(FILE *registroUsuarios);
+int verificadorNickname(char *nickname,char *credencial);
+int verificadorAcceso(char *valido,char *credencial);
+int menu();
+int menuAcceso();
+
+//declaracion de variables globales
+
 int main () {
-	//MENÚ DE INICIO
 	
-	//Declaración de variables
-	char respuestaMenuDeInicio[]= "";
-	char nombreYApellidosNuevoRegistro[]= "";
-	char descripcionUsuario[]= "";
-	char correoElectronico[]= "";
-	char nickname[]= "";
-	char contrasena[]= "";
-	int edad = 0;
-	int telefono = 0;
-	int cuentaBancaria = 0;
-	int ingresoSatisfactorioAlSistema = 0;
+	//variables
+	FILE *registroUsuarios;
+	FILE *registroAdmon;
 	
-	FILE *archivoUsuarios;
 	
-	//Elección de opciones (registro e ingreso)
-	printf("%c%c%c PUMACINE: Men%c de inicio %c%c%c", 176, 176, 176, 163, 176, 176, 176);
-	printf("\n\nBienvenido usuario.");
-	printf("\n%c Nuevo registro", 175);
-	printf("\n%c Ingreso al sistema", 175);
-	printf("\n\n%CQu%c deseas hacer? ", 168, 130);
-	fflush(stdin);
-	gets(respuestaMenuDeInicio);
-	printf("- Opci%cn elegida: %s\n", 162, respuestaMenuDeInicio);
 	
-	printf("\n%s\n", separador); //Separador
+	int seleccionMenu=0;
+	int seleccionAcceso=0;
+	int seleccionAdmon=0;
+	int ingresoSatisfactorioAlSistema=0;
+	int incorrecto=0;
+	char ingresoNickname[15];
 	
-	//Opción: Nuevo registro
-	if (strcmp(respuestaMenuDeInicio, "Nuevo registro") == 0) {
-		printf("\n%c%c%c PUMACINE: Nuevo registro %c%c%c", 176, 176, 176, 176, 176, 176);
-		printf("\n\nVamos a registrarlo en la base de datos.");
-		
-		//Apertura de archivo
-		archivoUsuarios = fopen ("archivoUsuarios.txt" , "r");
-		
-		printf("\nIngrese nombre(s), apellido materno y paterno: ");
-		fflush(stdin);
-		gets(nombreYApellidosNuevoRegistro);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(archivoUsuarios, "%s:", nombreYApellidosNuevoRegistro);
-		}
-		else {
- 			printf("El archivo no existe.\n");
- 		}
-		printf("Ingrese edad: ");
-		fflush(stdin);
-		scanf("%i", &edad);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(&edad, "%i:", &edad); //Se usa &???
-		}
-		printf("Ingrese un nickname: ");
-		fflush(stdin);
-		scanf("%c", nickname);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(archivoUsuarios, "%s:", nickname);
-		}
-		printf("Ingrese una contrase%ca: ", 164);
-		fflush(stdin);
-		scanf("%c", contrasena);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(archivoUsuarios, "%s:", contrasena);
-		}
-		printf("Ingrese una descripci%cn corta de usted: ", 162);
-		fflush(stdin);
-		gets(descripcionUsuario);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(archivoUsuarios, "%s:", descripcionUsuario);
-		}
-		printf("Ingrese un correo electr%cnico: ", 162);
-		fflush(stdin);
-		scanf("%c", correoElectronico);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(archivoUsuarios, "%s:", correoElectronico);
-		}
-		printf("Ingrese un tel%cfono: ", 130);
-		fflush(stdin);
-		scanf("%i", &telefono);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(archivoUsuarios, "%i:", &telefono);
-		}
-		printf("Ingrese una cuenta bancaria: ");
-		fflush(stdin);
-		scanf("%i", &cuentaBancaria);
-		if (archivoUsuarios != NULL) { //Escritura en archivo
-			fprintf(archivoUsuarios, "%i:", &cuentaBancaria);
-		}
-		
-		fclose(archivoUsuarios); //Cierre de archivo
-		printf("\nREGISTRO SATISFACTORIO --- Regresando al men%c principal...", 163);	
+	//Creacion de Admon
+	registroAdmon=fopen("credencialesAdmon.txt","w");
+	if (registroAdmon!=NULL)
+	{
+		fprintf(registroAdmon,"elAdministrador:3l4dm1n");
 	}
-	
-	//Opción: Ingreso al sistema
-	if (strcmp(respuestaMenuDeInicio, "Ingreso al sistema") == 0) {
-		ingresoSatisfactorioAlSistema = 0;
-		do {
-			printf("\n%c%c%c PUMACINE: Ingreso al sistema %c%c%c", 176, 176, 176, 176, 176, 176);
-			printf("\n\nVamos a ingresar a su cuenta.");
-			printf("\nIngrese su nickname: ");
-			fflush(stdin);
-			gets(nickname);
-			printf("Ingrese su contrase%ca: ", 164);
-			fflush(stdin);
-			gets(contrasena);
-			//Comparación de nickname y contraseña HACER CON MANEJO DE ARCHIVOS, CORREGIR STRCMP
-			if (strcmp(contrasena, "1234") == 0) {
-				printf("\nINGRESO SATISFACTORIO --- Pasando al men%c de usuarios...\n", 163);	
-				ingresoSatisfactorioAlSistema = 1; //El ciclo no se repetirá de nuevo
-			}
-			else {
-				printf("\nLOS DATOS NO SON CORRECTOS --- Regresando al men%c de ingreso...", 163);		
-			}
-		} while (ingresoSatisfactorioAlSistema == 0);
+	else{
+		printf("Falló el registro del administrador");
 	}
+	if (fclose(registroAdmon)==0)
+	{
+		printf("Registro satisfactorio del administrador");
+	}
+	else{
+		printf("Falló el registro del administrador");
+	}
+	while (4)
+	{
+		seleccionMenu=menu();
+		printf("- Opci%cn elegida: %d\n", 162, seleccionMenu);
 		printf("\n%s\n", separador); //Separador
-	return 69;
+		
+		switch(seleccionMenu){
+			case 1:
+				printf("\n%c%c%c PUMACINE: Nuevo registro %c%c%c", 176, 176, 176, 176, 176, 176);
+				printf("\n\nVamos a registrarlo en la base de datos.");
+				registroUsuarios=fopen("registro.txt","a+");
+				if (registroUsuarios!=NULL){
+					nuevoRegistro(registroUsuarios);
+				}
+				else{
+					printf("/nIntentelo mas tarde");
+				}
+				if (fclose(registroUsuarios)==0){
+					printf("\nRegistro satisfactorio");
+				}
+				else{
+					printf("/nIntentelo mas tarde");
+				}
+				
+				break;
+			case 2:
+				do{
+					printf("\n%c%c%c PUMACINE: Ingresa al sistema %c%c%c", 176, 176, 176, 176, 176, 176);
+					registroUsuarios=fopen("registro.txt","r+");
+				if (registroUsuarios!=NULL){
+					incorrecto=ingresoSistema(registroUsuarios);
+				}
+				else{
+					printf("/nIntentelo mas tarde");
+				}
+				if (fclose(registroUsuarios)==0){
+					if (incorrecto==1){
+					printf("\nAccesoPermitido");
+					}
+				}
+				else{
+					printf("/nIntentelo mas tarde");
+				}
+				}
+				while(incorrecto==0);
+				do{
+					seleccionAcceso=menuAcceso();
+					switch(seleccionAcceso){
+						case 1:
+							printf("\nEstas comprando");
+							break;
+						case 2:
+							printf("\nEstas realizando un comentario");
+							break;
+						case 3:
+							printf("\nEstas revisando un comentario");
+							break;
+						case 4:
+							printf("\nEstas calificando");
+							break;
+						case 5:
+							printf("\nEstas viendo las calificaciones");
+							break;							
+						case 0:
+							printf("\nEstas saliendo");
+							break;
+						default:
+							printf("\n%c%c%c PUMACINE: Selecion no permitida %c%c%c", 176, 176, 176, 176, 176, 176);
+							break;
+					}
+				}
+				while (seleccionAcceso!=0);
+				break;
+			case 3:
+				
+				do{
+					printf("\n%c%c%c PUMACINE: Ingresa al sistema %c%c%c", 176, 176, 176, 176, 176, 176);
+					registroAdmon=fopen("credencialesAdmon.txt","r+");
+				if (registroAdmon!=NULL){
+					incorrecto=ingresoSistema(registroAdmon);
+				}
+				else{
+					printf("/nIntentelo mas tarde");
+				}
+				if (fclose(registroAdmon)==0){
+					if (incorrecto==1){
+					printf("\nAccesoPermitido");
+					}
+				}
+				else{
+					printf("/nIntentelo mas tarde");
+				}
+				}
+				while(incorrecto==0);
+				do{
+					seleccionAdmon=menuAdmon();
+					switch(seleccionAdmon){
+						case 1:
+							printf("\nEstas dando de alta una Pelicula");
+							comprar()
+							break;
+						case 2:
+							printf("\nEstas registrando a un admon");
+							break;
+						case 3:
+							printf("\nEstas visualizando las compras de los usuarios");
+							break;						
+						case 0:
+							printf("\nEstas saliendo");
+							break;
+						default:
+							printf("\n%c%c%c PUMACINE: Selecion no permitida %c%c%c", 176, 176, 176, 176, 176, 176);
+							break;
+					}
+				}
+				while (seleccionAdmon!=0);
+				break;
+			default:
+				printf("\n%c%c%c PUMACINE: Selecion no permitida %c%c%c", 176, 176, 176, 176, 176, 176);
+				break;
+			
+		}
+	
+
+
+	}	
+}
+
+//cuerpo de funciones
+
+//Menu
+int menu()
+{
+	//variables
+	int seleccion=0;
+	//menu
+	printf("\n\nBienvenido usuario.");
+	printf("%c%c%c PUMACINE: Men%c de inicio %c%c%c", 176, 176, 176, 163, 176, 176, 176);
+	printf("\n%c 1. Nuevo registro", 175);
+	printf("\n%c 2. Inicia sesion", 175);
+	printf("\n%c 3. Soy Administrador", 175);
+	printf("\n\n%CQu%c deseas hacer? ", 168, 130);
+	scanf("%d",&seleccion);
+	return seleccion;
+}
+
+//Nuevo Registro
+void nuevoRegistro(FILE *registroUsuarios){
+	//variables
+	char nombre[50];
+	char nickname[20];
+	char password[15];
+	char descripcion[100];
+	char correo[25];
+	char celular[11];
+	char tarjeta[17];
+	char credencial[250];
+	int edad=0;
+	int verificador=0;
+	int p=0;
+	
+	//Nombre
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu nombre(s), apellido paterno y materno:\t");
+	fgets(nombre,50,stdin);
+	strtok(nombre,"\n");
+	fprintf(registroUsuarios,"%s:",nombre);
+					
+	//Edad
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu edad:\t");
+	scanf("%d",&edad);
+	fprintf(registroUsuarios,"%d:",edad);
+					
+	//Nickname
+	do{
+		setbuf(stdin,NULL);
+		printf("\nIngresa tu nickname:\t");
+		scanf("%s",nickname);
+		printf("Nickname ingresado:%s", nickname);
+		rewind(registroUsuarios);
+		while((feof(registroUsuarios) == 0))
+		{	
+			p=ftell(registroUsuarios);
+			fgets(credencial,200,registroUsuarios);
+			strtok(credencial,"\n");
+			printf("\nLinea copiada:%s",credencial);
+			verificador=verificadorNickname(nickname, credencial);
+			if (verificador==100){
+				break;
+			}
+		}
+
+		if (verificador==1){
+			fprintf(registroUsuarios,"%s:",nickname);
+		}
+		else{
+			printf("\nNickname en uso, elije otro");
+		}
+		
+	}
+	while(verificador==100);//*/
+	//Contraseña
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu contraseña:\t");
+	scanf("%s",&password);
+	fprintf(registroUsuarios,"%s:",password);
+			
+	//Descripcion
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu descripcion:\t");
+	fgets(descripcion,50,stdin);
+	strtok(descripcion,"\n");
+	fprintf(registroUsuarios,"%s:",descripcion);
+					
+	//Correo electronico
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu correo:\t");
+	fgets(correo,50,stdin);
+	strtok(correo,"\n");
+	fprintf(registroUsuarios,"%s:",correo);
+		
+	//Celular
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu celular:\t");
+	scanf("%s",&celular);
+	fprintf(registroUsuarios,"%s:",celular);
+					
+	//Tarjeta
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu tarjeta:\t");
+	scanf("%s",&tarjeta);
+	fprintf(registroUsuarios,"%s\n",tarjeta);
+	
+	
+	
+	
+	/*credenciales=fopen("credencialesUsuarios.txt","w");
+	if (credenciales!=NULL){
+		printf("Abierto");
+		fclose(credenciales);
+	}
+	else {
+		printf("ERROR");
+	}
+	printf("");
+	*/
+	
+}
+
+
+//Buscador de Nickname
+int verificadorNickname(char *nickname, char *credencial)
+{
+	int verificador=0;
+	char *buscador;
+	
+	buscador=strstr(credencial,nickname);
+	printf("\nBuscando %s en %s ",nickname,credencial);
+	if (buscador==NULL){
+		printf("\nNickname disponible");
+		printf("\nTu Nickname será:%s",buscador);
+		verificador=1;
+	}
+	else{
+		printf("\nNickname en uso");
+		verificador=100;
+	}
+	return verificador;
+}
+
+
+//Validacion Acceso
+int verificadorAcceso(char *valido, char *credencial)
+{
+	int verificador=0;
+	char *buscador;
+	
+	buscador=strstr(credencial,valido);
+	printf("\nBuscando %s en %s ",valido,credencial);
+	if (buscador==NULL){
+		printf("\nNickname no encontrado\n");
+		verificador=1;
+	}
+	else{
+		printf("\nNickname valido");
+		verificador=100;
+	}
+	return verificador;
+}
+
+//Validacion de Nickname y contraseña
+int ingresoSistema(FILE *registroUsuarios)
+{
+	char valido[20];
+	int accesoDenegado=0;
+	int verificador=0;
+	char credencial[200];
+	
+	do{
+	setbuf(stdin,NULL);
+	printf("\nIngresa tu nickname:\t");
+	fgets(valido,20,stdin);
+	strtok(valido,"\n");
+	
+	rewind(registroUsuarios);
+		while((feof(registroUsuarios) == 0))
+		{	
+			fgets(credencial,200,registroUsuarios);
+			strtok(credencial,"\n");
+			printf("\nLinea copiada:%s",credencial);
+			verificador=verificadorAcceso(valido, credencial);
+			if (verificador==100){
+				break;
+			}
+		}
+	if (verificador==1){
+			printf("\nNickname invalido, intenta otra vez");
+			
+		}
+		else{
+			printf("\nValido");
+
+		}
+	}
+	while(verificador==1);
+	do{
+		setbuf(stdin,NULL);
+		printf("\nIngresa tu contraseña:\t");
+		fgets(valido,20,stdin);
+		strtok(valido,"\n");
+		verificador=verificadorAcceso(valido, credencial);
+		if (verificador==1){
+				printf("\Contraseña invalida, intenta otra vez");
+			}
+		else{
+			printf("\nValido");
+			accesoDenegado=1;
+		}
+	}	
+	while(verificador==1);
+	return accesoDenegado;
+}
+int menuAcceso()
+{
+	//variables
+	int seleccion=0;
+	//menu
+
+	printf("%c%c%c PUMACINE: Men%c de acceso %c%c%c", 176, 176, 176, 163, 176, 176, 176);
+	printf("\n%c 1. Comprar Boletos", 175);
+	printf("\n%c 2. Realizar Comentario", 175);
+	printf("\n%c 3. Ver Comentario", 175);
+	printf("\n%c 4. Calificar Pelicula", 175);
+	printf("\n%c 5. Ver Comentario", 175);
+	printf("\n%c 0. Salir", 175);
+	printf("\n\n%CQu%c deseas hacer? ", 168, 130);
+	scanf("%d",&seleccion);
+	return seleccion;
+	
+	
+}
+
+
+
+int menuAdmon()
+{
+	//variables
+	int seleccion=0;
+	//menu
+
+	printf("%c%c%c PUMACINE: Men%c de administrador %c%c%c", 176, 176, 176, 163, 176, 176, 176);
+	printf("\n%c 1. Dar de alta una Pelicula", 175);
+	printf("\n%c 2. Registrar Admon", 175);
+	printf("\n%c 3. Peliculas compradas", 175);
+	printf("\n%c 0. Salir", 175);
+	printf("\n\n%CQu%c deseas hacer? ", 168, 130);
+	scanf("%d",&seleccion);
+	return seleccion;
+	
 }
